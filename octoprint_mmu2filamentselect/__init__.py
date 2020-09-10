@@ -1,5 +1,6 @@
 # coding=utf-8
 from __future__ import absolute_import
+from __future__ import unicode_literals
 import octoprint.plugin
 from threading import Timer
 
@@ -19,7 +20,7 @@ class MMU2SelectPlugin(octoprint.plugin.TemplatePlugin, octoprint.plugin.Setting
 		self._selectedTool = None
 
 	def initialize(self):
-		self._timeout = self._settings.get([b"timeout"])
+		self._timeout = self._settings.get(["timeout"])
 
 	#~ queuing handling
 
@@ -60,15 +61,15 @@ class MMU2SelectPlugin(octoprint.plugin.TemplatePlugin, octoprint.plugin.Setting
 
 	def on_settings_save(self, data):
 		try:
-			data[b"timeout"]=int(data[b"timeout"])
+			data["timeout"]=int(data["timeout"])
 		except:
-			data[b"timeout"]=30
+			data["timeout"]=30
 
-		if data[b"timeout"] < 0:
-			data[b"timeout"]=30
+		if data["timeout"] < 0:
+			data["timeout"]=30
 
 		octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
-		self._timeout = self._settings.get([b"timeout"])
+		self._timeout = self._settings.get(["timeout"])
 
 	#~ TemplatePlugin
 
@@ -145,8 +146,9 @@ class MMU2SelectPlugin(octoprint.plugin.TemplatePlugin, octoprint.plugin.Setting
 
 
 __plugin_name__ = "Prusa MMU2 Select Filament"
+__plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = MMU2SelectPlugin()
 __plugin_hooks__ = {
-	b"octoprint.comm.protocol.gcode.queuing": __plugin_implementation__.gcode_queuing_handler,
-	b"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
+	"octoprint.comm.protocol.gcode.queuing": __plugin_implementation__.gcode_queuing_handler,
+	"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 }
